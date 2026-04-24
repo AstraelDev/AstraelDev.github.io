@@ -564,7 +564,7 @@ export default function App() {
             }}
           >
             Vous êtes arrivé jusqu’ici…<br />
-            <span className="italic opacity-80">et si on créait quelque chose ensemble ?</span>
+            <span className="italic opacity-80">et si nous créions quelque chose ensemble ?</span>
           </motion.h2>
 
           <div className="space-y-12">
