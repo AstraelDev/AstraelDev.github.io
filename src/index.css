@@ -11,14 +11,14 @@
 }
 
 @layer base {
-  body {
-    @apply font-sans antialiased overflow-x-hidden cursor-none;
-    background-color: transparent;
-    overscroll-behavior-y: none;
+  * {
+    cursor: none !important;
   }
 
-  a, button {
-    @apply cursor-none;
+  body {
+    @apply font-sans antialiased overflow-x-hidden;
+    background-color: transparent;
+    overscroll-behavior-y: none;
   }
 
   /* Optimized for "glisser comme au doigt" */
@@ -26,11 +26,6 @@
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     height: 100dvh;
-    cursor: grab;
-  }
-
-  .scroll-container:active {
-    cursor: grabbing;
   }
 
   h1, h2, h3, .font-serif {

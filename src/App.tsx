@@ -7,6 +7,8 @@ import CV from './components/CV.tsx';
 import SkillsModal from './components/SkillsModal.tsx';
 import CustomCursor from './components/CustomCursor.tsx';
 import RippleEffect from './components/RippleEffect.tsx';
+import ProjectModal from './components/ProjectModal.tsx';
+import ProjectIllustration from './components/ProjectIllustration.tsx';
 
 /**
  * UTILS
@@ -25,6 +27,7 @@ export default function App() {
   const [burgerOpen, setBurgerOpen] = useState(false);
   const [cvOpen, setCvOpen] = useState(false);
   const [skillsOpen, setSkillsOpen] = useState(false);
+  const [projectIndexOpen, setProjectIndexOpen] = useState<number | null>(null);
   
   // Ripple before action handlers
   const openCV = () => {
@@ -33,6 +36,10 @@ export default function App() {
   
   const openSkills = () => {
     setTimeout(() => setSkillsOpen(true), 400);
+  };
+
+  const openProject = (index: number) => {
+    setTimeout(() => setProjectIndexOpen(index), 400);
   };
 
   // Sections definitions for programmatic scroll
@@ -520,9 +527,14 @@ export default function App() {
             className="grid grid-cols-1 md:grid-cols-3 gap-12" 
             style={{ color: theme.text }}
           >
-            {[1, 2, 3].map(i => (
+            {[
+              { id: 1, type: 'pipeline' as const, num: '01', sub: 'DevOps & Cloud', title: "Déploiement d'une pipeline CI/CD pour digitallia.de" },
+              { id: 2, type: 'ethereal' as const, num: '02', sub: 'Design & Poésie', title: "Concept Éthéré" },
+              { id: 3, type: 'cosmique' as const, num: '03', sub: 'Calcul circadien', title: "Horloge Cosmique" }
+            ].map((proj, idx) => (
               <motion.div 
-                key={i} 
+                key={proj.id} 
+                onClick={() => openProject(idx)}
                 variants={{
                   hidden: { y: 60, opacity: 0 },
                   visible: { 
@@ -531,13 +543,23 @@ export default function App() {
                     transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
                   }
                 }}
-                className="glass aspect-[4/5] rounded-[2rem] overflow-hidden group cursor-pointer relative shadow-2xl" 
+                className="glass aspect-[4/5] rounded-[2rem] overflow-hidden group cursor-pointer relative shadow-2xl flex flex-col justify-between border border-white/10" 
                 style={{ color: theme.text }}
               >
-                <div className="absolute inset-0 bg-current/5 group-hover:bg-transparent transition-colors duration-700" />
-                <div className="absolute inset-0 flex flex-col justify-end p-8">
-                    <p className="text-[10px] uppercase tracking-widest opacity-50 mb-2">Projet 0{i}</p>
-                    <h3 className="text-2xl font-serif">Concept Éthéré</h3>
+                {/* Dramatic background light overlay */}
+                <div className="absolute inset-0 bg-current/5 group-hover:bg-transparent transition-colors duration-700 pointer-events-none" />
+                
+                {/* Dynamic SVG / Time-Adaptive Illustration inside Card */}
+                <div className="w-full h-[55%] relative overflow-hidden group-hover:scale-105 transition-transform duration-700 ease-ethereal border-b border-white/5 bg-black/5">
+                  <ProjectIllustration type={proj.type} theme={theme} phase={phase} />
+                </div>
+
+                {/* Card Title & Meta Info */}
+                <div className="p-6 sm:p-8 flex flex-col justify-end relative z-10">
+                    <p className="text-[9px] uppercase tracking-[0.25em] opacity-40 mb-2">{proj.sub} • Projet {proj.num}</p>
+                    <h3 className="text-lg sm:text-xl font-serif font-black leading-tight group-hover:opacity-80 transition-opacity line-clamp-3">
+                      {proj.title}
+                    </h3>
                 </div>
               </motion.div>
             ))}
@@ -652,6 +674,14 @@ export default function App() {
           <SkillsModal 
             onClose={() => setSkillsOpen(false)} 
             theme={theme} 
+            phase={phase}
+          />
+        )}
+        {projectIndexOpen !== null && (
+          <ProjectModal 
+            projectIndex={projectIndexOpen}
+            onClose={() => setProjectIndexOpen(null)}
+            theme={theme}
             phase={phase}
           />
         )}
